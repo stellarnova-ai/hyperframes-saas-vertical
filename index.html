@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+        font-feature-settings: "ss01", "cv11", "tnum";
+      }
+
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        background:
+          radial-gradient(ellipse at 30% 20%, rgba(94,231,223,0.12) 0%, transparent 55%),
+          radial-gradient(ellipse at 80% 90%, rgba(255,77,139,0.10) 0%, transparent 55%),
+          linear-gradient(180deg, #050507 0%, #0a0a10 100%);
+        overflow: hidden;
+      }
+
+      /* ============ BG GRID (receding 2.5D) ============ */
+      .grid-stage {
+        position: absolute;
+        inset: 0;
+        perspective: 1400px;
+        perspective-origin: 50% 60%;
+      }
+      .grid-floor {
+        position: absolute;
+        left: -50%;
+        right: -50%;
+        bottom: -200px;
+        height: 1400px;
+        background-image:
+          linear-gradient(rgba(94,231,223,0.18) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(94,231,223,0.18) 1px, transparent 1px);
+        background-size: 80px 80px;
+        transform: rotateX(70deg) translateZ(-200px);
+        -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);
+        mask-image: linear-gradient(180deg, transparent 0%, #000 30%, #000 70%, transparent 100%);
+      }
+      .glow-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        mix-blend-mode: screen;
+      }
+      #blob-cyan {
+        top: 12%;
+        left: -10%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(94,231,223,0.55) 0%, transparent 70%);
+      }
+      #blob-magenta {
+        bottom: 10%;
+        right: -15%;
+        width: 700px;
+        height: 700px;
+        background: radial-gradient(circle, rgba(255,77,139,0.45) 0%, transparent 70%);
+      }
+
+      /* ============ BEAT 1: YEAR COUNTER ============ */
+      .year-stage {
+        position: absolute;
+        top: 740px;
+        left: 0;
+        right: 0;
+        height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .year {
+        position: absolute;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        font-size: 220px;
+        letter-spacing: -8px;
+        color: #fff;
+        text-shadow: 0 0 60px rgba(94,231,223,0.5);
+      }
+
+      /* ============ BEAT 1: HERO TYPO ============ */
+      .hero-stage {
+        position: absolute;
+        top: 540px;
+        left: 0;
+        right: 0;
+        padding: 0 60px;
+        text-align: center;
+      }
+      .hero-line {
+        font-weight: 900;
+        line-height: 0.92;
+        letter-spacing: -4px;
+        text-transform: uppercase;
+        display: block;
+      }
+      .hero-l1 {
+        font-size: 144px;
+        background: linear-gradient(180deg, #fff 0%, #c8eef0 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .hero-l2 {
+        font-size: 148px;
+        margin-top: 20px;
+        color: #6ef0e8;
+        font-style: italic;
+        font-weight: 800;
+      }
+      .hero-l3 {
+        font-size: 120px;
+        margin-top: 20px;
+        color: #fff;
+      }
+      .word {
+        display: inline-block;
+        will-change: transform, opacity;
+      }
+
+      .year-dock {
+        position: absolute;
+        top: 80px;
+        left: 80px;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        font-size: 36px;
+        color: #5ee7df;
+        letter-spacing: 4px;
+      }
+
+      .subtitle {
+        position: absolute;
+        bottom: 280px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+        font-size: 32px;
+        letter-spacing: 6px;
+        color: rgba(255,255,255,0.7);
+        text-transform: uppercase;
+      }
+
+      /* ============ BEAT 2: CARD STACK ============ */
+      .card-stage {
+        position: absolute;
+        inset: 0;
+        perspective: 1800px;
+        perspective-origin: 50% 50%;
+      }
+      .card {
+        position: absolute;
+        background: linear-gradient(135deg, rgba(20,22,30,0.92) 0%, rgba(10,12,18,0.96) 100%);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 32px;
+        backdrop-filter: blur(20px);
+        box-shadow:
+          0 60px 120px -20px rgba(0,0,0,0.8),
+          inset 0 0 0 1px rgba(94,231,223,0.10),
+          0 30px 60px rgba(94,231,223,0.05);
+        will-change: transform, opacity;
+      }
+      .card-chart {
+        top: 540px;
+        left: 60px;
+        width: 960px;
+        height: 720px;
+        padding: 50px;
+      }
+      .card-chart .label {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+        font-size: 22px;
+        letter-spacing: 4px;
+        color: rgba(94,231,223,0.85);
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+      .card-chart h3 {
+        font-weight: 800;
+        font-size: 56px;
+        letter-spacing: -2px;
+        color: #fff;
+        line-height: 1;
+      }
+      .chart-area {
+        position: relative;
+        margin-top: 50px;
+        height: 460px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-around;
+        gap: 28px;
+        padding: 0 20px 50px 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+      .bar {
+        position: relative;
+        flex: 1;
+        background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%);
+        border-radius: 6px 6px 0 0;
+        transform-origin: bottom center;
+        will-change: transform;
+      }
+      .bar.spike {
+        background: linear-gradient(180deg, #5ee7df 0%, #2bc7be 100%);
+        box-shadow: 0 0 40px rgba(94,231,223,0.6);
+      }
+      .bar-cap {
+        position: absolute;
+        top: -42px;
+        left: 50%;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        font-size: 22px;
+        color: rgba(255,255,255,0.6);
+        white-space: nowrap;
+      }
+      .bar.spike .bar-cap {
+        color: #5ee7df;
+        font-size: 28px;
+      }
+      .bar-year {
+        position: absolute;
+        bottom: -36px;
+        left: 50%;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 500;
+        font-size: 18px;
+        letter-spacing: 2px;
+        color: rgba(255,255,255,0.4);
+      }
+
+      .card-stat {
+        top: 240px;
+        right: 60px;
+        width: 480px;
+        padding: 36px 40px;
+        border-radius: 28px;
+      }
+      .card-stat .stat-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 14px;
+      }
+      .card-stat .stat-row:last-child {
+        margin-bottom: 0;
+      }
+      .card-stat .stat-row .name {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 26px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        color: rgba(255,255,255,0.5);
+        text-transform: uppercase;
+      }
+      .card-stat .stat-row .val {
+        font-weight: 800;
+        font-size: 56px;
+        letter-spacing: -2px;
+        font-feature-settings: "tnum";
+      }
+      .card-stat .ai .val {
+        color: #5ee7df;
+      }
+      .card-stat .you .val {
+        color: rgba(255,255,255,0.4);
+        font-size: 40px;
+      }
+
+      .pill {
+        position: absolute;
+        bottom: 280px;
+        left: 50%;
+        background: rgba(255,77,139,0.15);
+        border: 1px solid rgba(255,77,139,0.5);
+        backdrop-filter: blur(10px);
+        padding: 14px 32px;
+        border-radius: 100px;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 600;
+        font-size: 26px;
+        letter-spacing: 4px;
+        color: #ff4d8b;
+        text-transform: uppercase;
+      }
+
+      /* Final punchline */
+      .punch-stage {
+        position: absolute;
+        top: 760px;
+        left: 0;
+        right: 0;
+        padding: 0 60px;
+        text-align: center;
+      }
+      .punch-line {
+        font-weight: 900;
+        font-size: 124px;
+        line-height: 0.95;
+        letter-spacing: -4px;
+        text-transform: uppercase;
+        display: block;
+      }
+      .punch-l1 {
+        color: rgba(255,255,255,0.95);
+      }
+      .punch-l2 {
+        color: #ff4d8b;
+        margin-top: 14px;
+        font-style: italic;
+      }
+
+      /* Flash transition */
+      .flash {
+        position: absolute;
+        inset: 0;
+        background: #fff;
+        pointer-events: none;
+        will-change: opacity;
+      }
+
+      /* Vignette */
+      .vignette {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+        z-index: 90;
+      }
+
+      /* Shimmer (component) */
+      .shimmer-sweep-target {
+        position: relative;
+        display: inline-block;
+      }
+      .shimmer-sweep-target .shimmer-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background: linear-gradient(
+          var(--shimmer-angle, 110deg),
+          transparent 0%,
+          transparent calc(var(--shimmer-pos, -20%) - var(--shimmer-width, 25%) / 2),
+          var(--shimmer-color, rgba(255,255,255,0.85)) var(--shimmer-pos, -20%),
+          transparent calc(var(--shimmer-pos, -20%) + var(--shimmer-width, 25%) / 2),
+          transparent 100%
+        );
+        mix-blend-mode: overlay;
+      }
+
+      /* Grain (component) */
+      @keyframes hf-grain-noise {
+        0%, 100% { transform: translate(0, 0); }
+        10% { transform: translate(-5%, -5%); }
+        20% { transform: translate(-10%, 5%); }
+        30% { transform: translate(5%, -10%); }
+        40% { transform: translate(-5%, 15%); }
+        50% { transform: translate(-10%, 5%); }
+        60% { transform: translate(15%, 0); }
+        70% { transform: translate(0, 10%); }
+        80% { transform: translate(-15%, 0); }
+        90% { transform: translate(10%, 5%); }
+      }
+      #grain-overlay .grain-texture {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        opacity: 0.12;
+        animation: hf-grain-noise 0.5s steps(1) infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="10"
+      data-width="1080"
+      data-height="1920"
+    >
+      <!-- Background -->
+      <div id="grid-stage" class="grid-stage clip" data-start="0" data-duration="10" data-track-index="0">
+        <div id="grid-floor" class="grid-floor"></div>
+      </div>
+      <div id="blob-cyan" class="glow-blob clip" data-start="0" data-duration="10" data-track-index="1"></div>
+      <div id="blob-magenta" class="glow-blob clip" data-start="0" data-duration="10" data-track-index="2"></div>
+
+      <!-- BEAT 1 — Year ticker -->
+      <div id="year-stage" class="year-stage clip" data-start="0" data-duration="2.6" data-track-index="3">
+        <div id="year-2025" class="year">2025</div>
+        <div id="year-2026" class="year" style="opacity: 0">2026</div>
+        <div id="year-2027" class="year" style="opacity: 0">2027</div>
+      </div>
+
+      <!-- Year dock (small top-left) -->
+      <div id="year-dock" class="year-dock clip" data-start="2.4" data-duration="2.2" data-track-index="4" style="opacity: 0">
+        ▸ 2027
+      </div>
+
+      <!-- BEAT 1 — Hero typography -->
+      <div id="hero-stage" class="hero-stage clip" data-start="1.95" data-duration="2.7" data-track-index="5" data-layout-allow-overflow="true">
+        <span id="hero-l1" class="hero-line hero-l1">
+          <span class="word" id="w1">Maschinen</span>
+          <span class="word" id="w2">denken</span>
+        </span>
+        <span id="hero-l2" class="hero-line hero-l2 shimmer-sweep-target">schneller</span>
+        <span id="hero-l3" class="hero-line hero-l3">
+          <span class="word" id="w3">als</span>
+          <span class="word" id="w4">du.</span>
+        </span>
+      </div>
+
+      <div id="subtitle" class="subtitle clip" data-start="3.25" data-duration="1.4" data-track-index="6">
+        ▸ Bis 2027 ◂
+      </div>
+
+      <!-- BEAT 2 — Card stack -->
+      <div id="card-stage" class="card-stage clip" data-start="5" data-duration="3.5" data-track-index="7" data-layout-allow-overflow="true">
+        <div id="card-chart" class="card card-chart">
+          <div class="label">Cognitive Throughput</div>
+          <h3>AI vs. Human</h3>
+          <div class="chart-area">
+            <div class="bar" id="bar-2023" data-layout-allow-overflow="true" style="height: 90px">
+              <div class="bar-cap">1×</div>
+              <div class="bar-year">2023</div>
+            </div>
+            <div class="bar" id="bar-2024" data-layout-allow-overflow="true" style="height: 130px">
+              <div class="bar-cap">2×</div>
+              <div class="bar-year">2024</div>
+            </div>
+            <div class="bar" id="bar-2025-c" data-layout-allow-overflow="true" style="height: 200px">
+              <div class="bar-cap">12×</div>
+              <div class="bar-year">2025</div>
+            </div>
+            <div class="bar" id="bar-2026-c" data-layout-allow-overflow="true" style="height: 280px">
+              <div class="bar-cap">68×</div>
+              <div class="bar-year">2026</div>
+            </div>
+            <div class="bar spike" id="bar-2027-c" data-layout-allow-overflow="true" style="height: 410px">
+              <div class="bar-cap">340×</div>
+              <div class="bar-year">2027</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="card-stat" class="card card-stat">
+          <div class="stat-row ai">
+            <div class="name">AI</div>
+            <div class="val" id="stat-ai">+340%</div>
+          </div>
+          <div class="stat-row you">
+            <div class="name">You</div>
+            <div class="val">1.0×</div>
+          </div>
+        </div>
+
+        <div id="pill" class="pill">Stand · 2027</div>
+      </div>
+
+      <!-- BEAT 2 — Final punchline -->
+      <div id="punch-stage" class="punch-stage clip" data-start="8.4" data-duration="1.6" data-track-index="8">
+        <span id="punch-l1" class="punch-line punch-l1">
+          <span class="word" id="p1">Du wirst nicht</span>
+          <span class="word" id="p2">ersetzt.</span>
+        </span>
+        <span id="punch-l2" class="punch-line punch-l2 shimmer-sweep-target">Du wirst überholt.</span>
+      </div>
+
+      <!-- Flash overlays -->
+      <div id="flash" class="flash clip" data-start="4.6" data-duration="0.7" data-track-index="10" style="opacity: 0"></div>
+      <div id="flash2" class="flash clip" data-start="8.2" data-duration="0.5" data-track-index="10" style="opacity: 0"></div>
+
+      <!-- Vignette -->
+      <div id="vignette" class="vignette clip" data-start="0" data-duration="10" data-track-index="95"></div>
+
+      <!-- Grain overlay -->
+      <div
+        id="grain-overlay"
+        class="clip"
+        data-start="0"
+        data-duration="10"
+        data-track-index="99"
+        style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:100;"
+      >
+        <div class="grain-texture"></div>
+      </div>
+    </div>
+
+    <!-- Auto-inject shimmer mask -->
+    <script>
+      (function () {
+        document.querySelectorAll(".shimmer-sweep-target").forEach((el) => {
+          if (!el.querySelector(".shimmer-mask")) {
+            const mask = document.createElement("div");
+            mask.className = "shimmer-mask";
+            el.appendChild(mask);
+          }
+        });
+      })();
+    </script>
+
+    <!-- ============ MAIN TIMELINE ============ -->
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Center elements that previously used CSS translateX(-50%)
+      gsap.set([".bar-cap", ".bar-year", "#pill"], { xPercent: -50 });
+
+      // ===== Background ambient =====
+      tl.from("#grid-floor", { opacity: 0, scale: 0.85, duration: 1.2, ease: "expo.out" }, 0);
+      tl.from("#blob-cyan", { opacity: 0, scale: 0.6, duration: 1.6, ease: "power2.out" }, 0);
+      tl.from("#blob-magenta", { opacity: 0, scale: 0.6, duration: 1.6, ease: "power2.out" }, 0.2);
+      tl.to("#blob-cyan", { x: 60, y: -40, duration: 10, ease: "none" }, 0);
+      tl.to("#blob-magenta", { x: -80, y: 30, duration: 10, ease: "none" }, 0);
+
+      // ===== BEAT 1 — Year ticker =====
+      tl.from("#year-2025", { opacity: 0, scale: 0.5, y: 60, duration: 0.5, ease: "back.out(2)" }, 0.25);
+      tl.to("#year-2025", { opacity: 0, y: -80, scale: 0.85, duration: 0.35, ease: "power3.in" }, 0.85);
+      tl.fromTo("#year-2026",
+        { opacity: 0, y: 80, scale: 0.85 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(1.8)" },
+        0.95);
+      tl.to("#year-2026", { opacity: 0, y: -80, scale: 0.85, duration: 0.35, ease: "power3.in" }, 1.4);
+      tl.fromTo("#year-2027",
+        { opacity: 0, y: 100, scale: 0.7 },
+        { opacity: 1, y: 0, scale: 1.15, duration: 0.5, ease: "back.out(2.2)" },
+        1.5);
+      tl.to("#year-2027", { scale: 1.3, duration: 0.2, ease: "power2.out" }, 2.0);
+      tl.to("#year-2027",
+        { opacity: 0, scale: 0.4, x: -440, y: -820, duration: 0.5, ease: "power3.inOut" },
+        2.2);
+      tl.fromTo("#year-dock",
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.4, ease: "power2.out" },
+        2.5);
+
+      // ===== BEAT 1 — Hero typography =====
+      tl.fromTo("#w1",
+        { opacity: 0, y: -200, rotation: -8 },
+        { opacity: 1, y: 0, rotation: 0, duration: 0.7, ease: "back.out(1.7)" },
+        2.05);
+      tl.fromTo("#w2",
+        { opacity: 0, y: -200, rotation: 6 },
+        { opacity: 1, y: 0, rotation: 0, duration: 0.7, ease: "back.out(1.7)" },
+        2.18);
+      tl.fromTo("#hero-l2",
+        { opacity: 0, x: 800, rotation: -3, scale: 0.9 },
+        { opacity: 1, x: 0, rotation: 0, scale: 1, duration: 0.8, ease: "expo.out" },
+        2.45);
+      tl.fromTo("#w3",
+        { opacity: 0, y: 100 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "back.out(2)" },
+        2.85);
+      tl.fromTo("#w4",
+        { opacity: 0, y: 100, scale: 0.7 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(2.5)" },
+        2.95);
+      tl.fromTo("#hero-l2",
+        { "--shimmer-pos": "-25%" },
+        { "--shimmer-pos": "125%", duration: 1.0, ease: "power2.inOut" },
+        3.0);
+      tl.to("#hero-stage", { y: -10, duration: 1.6, ease: "sine.inOut" }, 3.2);
+      tl.fromTo("#subtitle",
+        { opacity: 0, y: 40, scale: 0.9 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(2)" },
+        3.3);
+
+      // ===== Beat 1 → 2 — Exit + flash =====
+      tl.to(["#hero-stage", "#subtitle", "#year-dock"],
+        { opacity: 0, scale: 1.15, duration: 0.45, ease: "power3.in" },
+        4.55);
+      tl.to("#flash", { opacity: 1, duration: 0.18, ease: "power2.in" }, 4.7);
+      tl.to("#flash", { opacity: 0, duration: 0.35, ease: "power2.out" }, 4.92);
+      tl.to("#grid-floor", { scale: 1.1, duration: 0.6, ease: "power2.out" }, 4.6);
+      tl.to("#grid-floor", { scale: 1.0, duration: 1.2, ease: "power2.inOut" }, 5.2);
+
+      // ===== BEAT 2 — Card stack =====
+      tl.fromTo("#card-chart",
+        { opacity: 0, y: 1500, rotation: -6, scale: 0.75 },
+        { opacity: 1, y: 0, rotation: 0, scale: 1, duration: 0.95, ease: "back.out(1.4)" },
+        5.05);
+
+      gsap.set(".bar", { scaleY: 0, transformOrigin: "bottom center" });
+      tl.to("#bar-2023", { scaleY: 1, duration: 0.35, ease: "power3.out" }, 5.85);
+      tl.to("#bar-2024", { scaleY: 1, duration: 0.35, ease: "power3.out" }, 5.97);
+      tl.to("#bar-2025-c", { scaleY: 1, duration: 0.40, ease: "power3.out" }, 6.10);
+      tl.to("#bar-2026-c", { scaleY: 1, duration: 0.45, ease: "power3.out" }, 6.25);
+      tl.fromTo("#bar-2027-c",
+        { scaleY: 0 },
+        { scaleY: 1.08, duration: 0.55, ease: "back.out(2.4)" },
+        6.42);
+      tl.to("#bar-2027-c", { scaleY: 1, duration: 0.25, ease: "power2.inOut" }, 6.97);
+
+      tl.fromTo(".bar-cap",
+        { xPercent: -50, opacity: 0, y: 10 },
+        { xPercent: -50, opacity: 1, y: 0, duration: 0.3, stagger: 0.08, ease: "power2.out" },
+        6.0);
+      tl.fromTo(".bar-year",
+        { xPercent: -50, opacity: 0 },
+        { xPercent: -50, opacity: 1, duration: 0.3, stagger: 0.06, ease: "power2.out" },
+        5.95);
+
+      tl.fromTo("#card-stat",
+        { opacity: 0, x: 700, y: -200, rotation: 8, scale: 0.85 },
+        { opacity: 1, x: 0, y: 0, rotation: 0, scale: 1, duration: 0.85, ease: "back.out(1.5)" },
+        6.4);
+      tl.from("#stat-ai",
+        { scale: 0.4, opacity: 0, duration: 0.5, ease: "back.out(2.4)" },
+        6.85);
+
+      tl.fromTo("#pill",
+        { xPercent: -50, opacity: 0, y: 60, scale: 0.6 },
+        { xPercent: -50, opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(2.6)" },
+        7.0);
+
+      // 2.5D parallax drift (start AFTER fly-ins finish)
+      tl.to("#card-chart", { x: -25, y: 12, duration: 1.4, ease: "sine.inOut" }, 7.3);
+      tl.to("#card-stat", { x: 35, y: -10, duration: 1.4, ease: "sine.inOut" }, 7.3);
+      tl.to("#pill", { y: -8, duration: 1.3, ease: "sine.inOut" }, 7.65);
+
+      // Recede before punchline
+      tl.to(["#card-chart", "#card-stat", "#pill"],
+        { scale: 0.9, opacity: 0.25, y: "+=30", duration: 0.6, ease: "power2.inOut", overwrite: "auto" },
+        8.1);
+
+      tl.to("#flash2", { opacity: 0.7, duration: 0.12, ease: "power2.in" }, 8.25);
+      tl.to("#flash2", { opacity: 0, duration: 0.3, ease: "power2.out" }, 8.4);
+
+      // ===== BEAT 2 — Final punchline =====
+      tl.fromTo("#p1",
+        { opacity: 0, y: 120, rotation: -2 },
+        { opacity: 1, y: 0, rotation: 0, duration: 0.55, ease: "back.out(1.8)" },
+        8.5);
+      tl.fromTo("#p2",
+        { opacity: 0, y: 120, scale: 0.85 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "back.out(2)" },
+        8.6);
+      tl.fromTo("#punch-l2",
+        { opacity: 0, y: 140, x: -60, rotation: 2, scale: 0.9 },
+        { opacity: 1, y: 0, x: 0, rotation: 0, scale: 1, duration: 0.75, ease: "back.out(1.7)" },
+        8.85);
+      tl.fromTo("#punch-l2",
+        { "--shimmer-pos": "-25%" },
+        { "--shimmer-pos": "125%", duration: 1.0, ease: "power2.inOut" },
+        9.05);
+      tl.to("#punch-stage", { scale: 1.02, duration: 1.0, ease: "sine.out" }, 9.0);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

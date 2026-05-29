@@ -1,0 +1,25 @@
+# Footage & Media
+Footage/
+Renders/
+*.mp4
+*.mov
+*.webm
+*.mkv
+
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
