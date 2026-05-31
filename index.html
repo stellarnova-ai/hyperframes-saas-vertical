@@ -8,10 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@600;800;900&display=swap" rel="stylesheet" />
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
-  html,body { width:1080px; height:1920px; overflow:hidden; background:#000; font-family:"Inter",sans-serif; color:#fff; -webkit-font-smoothing:antialiased; }
+  html,body { width:1080px; height:1920px; overflow:hidden; background:#000; font-family:"Inter",sans-serif; color:#fff; }
   #root { position:relative; width:1080px; height:1920px; background:#0A0A0A; overflow:hidden; }
-  .broll { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; will-change:transform; filter:contrast(1.04) saturate(1.02) brightness(0.96); }
-  /* dunkle Vignette + leichtes Gold-Rim, KEIN amber-wash */
+  #bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:contrast(1.04) saturate(1.02) brightness(0.96); }
   .scrim { position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.72) 100%); z-index:80; }
   .typo { position:absolute; left:0; right:0; bottom:360px; text-align:center; z-index:120; }
   .t-big { display:block; font-family:"Anton",sans-serif; font-size:300px; line-height:0.86; letter-spacing:-4px; text-transform:uppercase; text-shadow:0 8px 60px rgba(0,0,0,0.7); }
@@ -21,45 +20,11 @@
   .end-logo b { color:#C9A24B; }
   .end-sub { font-family:"Anton",sans-serif; font-size:64px; letter-spacing:8px; color:#C9A24B; margin-top:18px; text-transform:uppercase; }
   .grain { position:absolute; inset:0; pointer-events:none; z-index:150; opacity:0.10; background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
-  .flash { position:absolute; inset:0; background:#fff; z-index:140; pointer-events:none; opacity:0; }
 </style>
 </head>
 <body>
   <div id="root" data-composition-id="main" data-start="0" data-duration="32.736" data-width="1080" data-height="1920">
-      <video id="v0" class="clip broll" src="assets/broll/26_entrance_lang_C0110.mov" muted playsinline preload="auto" data-start="0.0" data-duration="0.992" data-media-start="0" data-track-index="10"></video>
-      <video id="v1" class="clip broll" src="assets/broll/01_action_lang_C0159.mov" muted playsinline preload="auto" data-start="0.992" data-duration="0.992" data-media-start="0" data-track-index="11"></video>
-      <video id="v2" class="clip broll" src="assets/broll/31_equipment_lang_C0207.mov" muted playsinline preload="auto" data-start="1.984" data-duration="0.496" data-media-start="0" data-track-index="12"></video>
-      <video id="v3" class="clip broll" src="assets/broll/16_atmosphere_lang_C0112.mov" muted playsinline preload="auto" data-start="2.48" data-duration="0.496" data-media-start="0" data-track-index="13"></video>
-      <video id="v4" class="clip broll" src="assets/broll/02_action_lang_C0215.mov" muted playsinline preload="auto" data-start="2.976" data-duration="0.992" data-media-start="0" data-track-index="14"></video>
-      <video id="v5" class="clip broll" src="assets/broll/32_equipment_lang_C0081.mov" muted playsinline preload="auto" data-start="3.968" data-duration="1.984" data-media-start="0" data-track-index="15"></video>
-      <video id="v6" class="clip broll" src="assets/broll/03_action_lang_C0226.mov" muted playsinline preload="auto" data-start="5.952" data-duration="0.992" data-media-start="0" data-track-index="16"></video>
-      <video id="v7" class="clip broll" src="assets/broll/17_atmosphere_lang_C0105.mov" muted playsinline preload="auto" data-start="6.944" data-duration="0.496" data-media-start="0" data-track-index="17"></video>
-      <video id="v8" class="clip broll" src="assets/broll/05_action_lang_C0182.mov" muted playsinline preload="auto" data-start="7.44" data-duration="0.496" data-media-start="0" data-track-index="18"></video>
-      <video id="v9" class="clip broll" src="assets/broll/33_equipment_lang_C0082.mov" muted playsinline preload="auto" data-start="7.936" data-duration="0.992" data-media-start="0" data-track-index="19"></video>
-      <video id="v10" class="clip broll" src="assets/broll/06_action_lang_C0214.mov" muted playsinline preload="auto" data-start="8.928" data-duration="0.992" data-media-start="0" data-track-index="20"></video>
-      <video id="v11" class="clip broll" src="assets/broll/07_action_mittel_C0221.mov" muted playsinline preload="auto" data-start="9.92" data-duration="1.984" data-media-start="0" data-track-index="21"></video>
-      <video id="v12" class="clip broll" src="assets/broll/34_equipment_lang_C0083.mov" muted playsinline preload="auto" data-start="11.904" data-duration="0.992" data-media-start="0" data-track-index="22"></video>
-      <video id="v13" class="clip broll" src="assets/broll/18_atmosphere_lang_C0030.mov" muted playsinline preload="auto" data-start="12.896" data-duration="0.992" data-media-start="0" data-track-index="23"></video>
-      <video id="v14" class="clip broll" src="assets/broll/09_action_lang_C0222.mov" muted playsinline preload="auto" data-start="13.888" data-duration="0.496" data-media-start="0" data-track-index="24"></video>
-      <video id="v15" class="clip broll" src="assets/broll/35_equipment_lang_C0089.mov" muted playsinline preload="auto" data-start="14.384" data-duration="0.496" data-media-start="0" data-track-index="25"></video>
-      <video id="v16" class="clip broll" src="assets/broll/10_action_kurz_C0225.mov" muted playsinline preload="auto" data-start="14.88" data-duration="0.992" data-media-start="0" data-track-index="26"></video>
-      <video id="v17" class="clip broll" src="assets/broll/27_entrance_mittel_C0007.mov" muted playsinline preload="auto" data-start="15.872" data-duration="1.984" data-media-start="0" data-track-index="27"></video>
-      <video id="v18" class="clip broll" src="assets/broll/36_equipment_lang_C0090.mov" muted playsinline preload="auto" data-start="17.856" data-duration="0.992" data-media-start="0" data-track-index="28"></video>
-      <video id="v19" class="clip broll" src="assets/broll/12_action_lang_C0227.mov" muted playsinline preload="auto" data-start="18.848" data-duration="0.496" data-media-start="0" data-track-index="29"></video>
-      <video id="v20" class="clip broll" src="assets/broll/19_atmosphere_lang_C0086.mov" muted playsinline preload="auto" data-start="19.344" data-duration="0.496" data-media-start="0" data-track-index="30"></video>
-      <video id="v21" class="clip broll" src="assets/broll/37_equipment_lang_C0092.mov" muted playsinline preload="auto" data-start="19.84" data-duration="0.992" data-media-start="0" data-track-index="31"></video>
-      <video id="v22" class="clip broll" src="assets/broll/14_action_lang_C0104.mov" muted playsinline preload="auto" data-start="20.832" data-duration="0.992" data-media-start="0" data-track-index="32"></video>
-      <video id="v23" class="clip broll" src="assets/broll/20_atmosphere_lang_C0088.mov" muted playsinline preload="auto" data-start="21.824" data-duration="1.984" data-media-start="0" data-track-index="33"></video>
-      <video id="v24" class="clip broll" src="assets/broll/29_entrance_lang_C0120.mov" muted playsinline preload="auto" data-start="23.808" data-duration="0.992" data-media-start="0" data-track-index="34"></video>
-      <video id="v25" class="clip broll" src="assets/broll/60_gesture_lang_C0098.mov" muted playsinline preload="auto" data-start="24.8" data-duration="0.992" data-media-start="0" data-track-index="35"></video>
-      <video id="v26" class="clip broll" src="assets/broll/38_equipment_lang_C0096.mov" muted playsinline preload="auto" data-start="25.792" data-duration="0.496" data-media-start="0" data-track-index="36"></video>
-      <video id="v27" class="clip broll" src="assets/broll/15_action_mittel_C0165.mov" muted playsinline preload="auto" data-start="26.288" data-duration="0.496" data-media-start="0" data-track-index="37"></video>
-      <video id="v28" class="clip broll" src="assets/broll/21_atmosphere_lang_C0109.mov" muted playsinline preload="auto" data-start="26.784" data-duration="0.992" data-media-start="0" data-track-index="38"></video>
-      <video id="v29" class="clip broll" src="assets/broll/41_equipment_mittel_C0113.mov" muted playsinline preload="auto" data-start="27.776" data-duration="1.984" data-media-start="0" data-track-index="39"></video>
-      <video id="v30" class="clip broll" src="assets/broll/23_atmosphere_lang_C0116.mov" muted playsinline preload="auto" data-start="29.76" data-duration="0.992" data-media-start="0" data-track-index="40"></video>
-      <video id="v31" class="clip broll" src="assets/broll/42_equipment_lang_C0114.mov" muted playsinline preload="auto" data-start="30.752" data-duration="0.496" data-media-start="0" data-track-index="41"></video>
-      <video id="v32" class="clip broll" src="assets/broll/24_atmosphere_lang_C0233.mov" muted playsinline preload="auto" data-start="31.248" data-duration="0.496" data-media-start="0" data-track-index="42"></video>
-      <video id="v33" class="clip broll" src="assets/broll/43_equipment_lang_C0234.mov" muted playsinline preload="auto" data-start="31.744" data-duration="0.992" data-media-start="0" data-track-index="43"></video>
+      <video id="bg" class="clip" src="assets/montage.mp4" muted playsinline preload="auto" data-start="0" data-duration="32.736" data-media-start="0" data-track-index="5"></video>
       <div class="scrim clip" id="scrim" data-start="0" data-duration="32.736" data-track-index="90"></div>
       <div class="clip typo" id="typo0" data-start="2.976" data-duration="1.592" data-track-index="300" data-layout-allow-overflow="true"><span class="t-big" style="color:#C9A24B">30</span><span class="t-small">JAHRE STRAIGHT</span></div>
       <div class="clip typo" id="typo1" data-start="8.928" data-duration="1.592" data-track-index="301" data-layout-allow-overflow="true"><span class="t-big" style="color:#ffffff">30 €</span><span class="t-small">FÜR 30 WOCHEN</span></div>
@@ -67,7 +32,6 @@
       <div class="clip typo" id="typo3" data-start="19.84" data-duration="1.592" data-track-index="303" data-layout-allow-overflow="true"><span class="t-big" style="color:#ffffff">50%</span><span class="t-small">RABATT</span></div>
       <div class="clip typo" id="typo4" data-start="24.8" data-duration="1.592" data-track-index="304" data-layout-allow-overflow="true"><span class="t-big" style="color:#C9A24B">NUR</span><span class="t-small">30 PLÄTZE</span></div>
       <div class="clip typo" id="typo5" data-start="30.752" data-duration="1.096" data-track-index="305" data-layout-allow-overflow="true"><span class="t-big" style="color:#ffffff">JETZT</span><span class="t-small">SICHERN</span></div>
-      <div class="flash clip" id="flash" data-start="0" data-duration="32.736" data-track-index="140"></div>
       <div class="grain clip" id="grain" data-start="0" data-duration="32.736" data-track-index="150"></div>
       <div class="end-card clip" id="end-card" data-start="29.936" data-duration="2.8" data-track-index="260" style="opacity:0">
         <div class="end-logo">STR<b>AI</b>GHT</div>
@@ -78,40 +42,6 @@
   <script>
     window.__timelines = window.__timelines || {};
     const tl = gsap.timeline({ paused: true });
-      tl.fromTo("#v0", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 0.0);
-      tl.fromTo("#v1", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 0.992);
-      tl.fromTo("#v2", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 1.984);
-      tl.fromTo("#v3", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 2.48);
-      tl.fromTo("#v4", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 2.976);
-      tl.fromTo("#v5", {scale:1.08}, {scale:1.0,duration:1.984,ease:"none"}, 3.968);
-      tl.fromTo("#v6", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 5.952);
-      tl.fromTo("#v7", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 6.944);
-      tl.fromTo("#v8", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 7.44);
-      tl.fromTo("#v9", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 7.936);
-      tl.fromTo("#v10", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 8.928);
-      tl.fromTo("#v11", {scale:1.08}, {scale:1.0,duration:1.984,ease:"none"}, 9.92);
-      tl.fromTo("#v12", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 11.904);
-      tl.fromTo("#v13", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 12.896);
-      tl.fromTo("#v14", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 13.888);
-      tl.fromTo("#v15", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 14.384);
-      tl.fromTo("#v16", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 14.88);
-      tl.fromTo("#v17", {scale:1.08}, {scale:1.0,duration:1.984,ease:"none"}, 15.872);
-      tl.fromTo("#v18", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 17.856);
-      tl.fromTo("#v19", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 18.848);
-      tl.fromTo("#v20", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 19.344);
-      tl.fromTo("#v21", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 19.84);
-      tl.fromTo("#v22", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 20.832);
-      tl.fromTo("#v23", {scale:1.08}, {scale:1.0,duration:1.984,ease:"none"}, 21.824);
-      tl.fromTo("#v24", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 23.808);
-      tl.fromTo("#v25", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 24.8);
-      tl.fromTo("#v26", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 25.792);
-      tl.fromTo("#v27", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 26.288);
-      tl.fromTo("#v28", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 26.784);
-      tl.fromTo("#v29", {scale:1.08}, {scale:1.0,duration:1.984,ease:"none"}, 27.776);
-      tl.fromTo("#v30", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 29.76);
-      tl.fromTo("#v31", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 30.752);
-      tl.fromTo("#v32", {scale:1.08}, {scale:1.0,duration:0.496,ease:"none"}, 31.248);
-      tl.fromTo("#v33", {scale:1.08}, {scale:1.0,duration:0.992,ease:"none"}, 31.744);
       tl.fromTo("#typo0 .t-big", {opacity:0,y:80,scale:1.3}, {opacity:1,y:0,scale:1,duration:0.32,ease:"back.out(2)"}, 2.976);
       tl.fromTo("#typo0 .t-small", {opacity:0,y:30}, {opacity:1,y:0,duration:0.3,ease:"power2.out"}, 3.056);
       tl.to("#typo0", {opacity:0,duration:0.2,ease:"power2.in"}, 4.368);
@@ -130,7 +60,6 @@
       tl.fromTo("#typo5 .t-big", {opacity:0,y:80,scale:1.3}, {opacity:1,y:0,scale:1,duration:0.32,ease:"back.out(2)"}, 30.752);
       tl.fromTo("#typo5 .t-small", {opacity:0,y:30}, {opacity:1,y:0,duration:0.3,ease:"power2.out"}, 30.832);
       tl.to("#typo5", {opacity:0,duration:0.2,ease:"power2.in"}, 31.648);
-    // End-Card Reveal + Logo-Pop
     tl.to("#end-card", {opacity:1, duration:0.25, ease:"power2.out"}, 29.936);
     tl.fromTo("#end-card .end-logo", {scale:1.25, opacity:0}, {scale:1, opacity:1, duration:0.5, ease:"back.out(1.8)"}, 29.986);
     tl.fromTo("#end-card .end-sub", {opacity:0, y:30}, {opacity:1, y:0, duration:0.4, ease:"power2.out"}, 30.336);
